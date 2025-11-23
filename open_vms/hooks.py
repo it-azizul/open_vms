@@ -30,6 +30,13 @@ app_license = "MIT"
 
 # include js in doctype views
 # doctype_js = {"doctype" : "public/js/doctype.js"}
+
+doctype_js = {
+    "Material Request": "public/js/custom_get_item_data.js",
+    "BOM": "public/js/bom/custom_bom.js",
+    "Production Plan": "public/js/custom_production_plan/custom_production_plan.js",
+}
+
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -94,9 +101,11 @@ app_license = "MIT"
 # ---------------
 # Override standard doctype classes
 
-# override_doctype_class = {
-# 	"ToDo": "custom_app.overrides.CustomToDo"
-# }
+override_doctype_class = {
+	# "ToDo": "custom_app.overrides.CustomToDo"
+    # "Production Plan": "open_vms.overrides.custom_production_plan.custom_production_plan.CustomProductionPlan"
+}
+
 
 # Document Events
 # ---------------
@@ -201,7 +210,16 @@ app_license = "MIT"
 doc_events = {
     "Sales Order": {
         "on_submit": "open_vms.custom_script.create_stock_entry"
+    },
+
+    "Leave Application": {
+        "on_update": "open_vms.custom_script.notify_leave_approvers",
+        # "on_update": "open_vms.overrides.leave_notifications.leave_notifications.notify_leave_approvers"
+        # open_vms.overrides.get_item_details.get_item_details
+        "on_submit": "open_vms.leave_application_sync_with_kormee.on_leave_submit",
+        "on_cancel": "open_vms.leave_application_sync_with_kormee.on_leave_cancel"
     }
+
 }
 
  # Include the html5-qrcode library
